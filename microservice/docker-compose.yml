@@ -1,0 +1,21 @@
+version: "3"
+services:
+  ${MICROSERVICE-NAME}:
+    image: ${REPOSITORY_URL}/${MICROSERVICE-NAME}:${ECR_SERVICE_01_VERSION:-latest}
+    ports:
+      - ${AWS_SERVICE_01_TG_PORT}:${AWS_SERVICE_01_TG_PORT}
+    environment:     
+      - JAVA_OPTIONS=-Xms1g -Xmx1g -Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager -Dapplication.properties=/deployments/config/application.properties -Duser.timezone=GMT-3
+    volumes:
+      - myEFSVolume:/deployments/config
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: ${AWS_SERVICE_01_LOG}
+        awslogs-region: ${AWS_REGION}
+        awslogs-stream-prefix: ${MICROSERVICE-NAME}
+  collector:
+    image: amazon/aws-otel-collector:latest
+    command: ["--config=/etc/ecs/container-insights/otel-task-metrics-config.yaml"]
+volumes:
+  myEFSVolume:

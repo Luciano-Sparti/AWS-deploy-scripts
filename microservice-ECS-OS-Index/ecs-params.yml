@@ -1,0 +1,29 @@
+version: 1
+task_definition:
+  task_role_arn: ${ECS_EXECUTION_ROLE}
+  task_execution_role: ${ECS_EXECUTION_ROLE}
+  ecs_network_mode: awsvpc
+  task_size:
+    mem_limit: ${ECS_SERVICE_INDEX_MEM}
+    cpu_limit: ${ECS_SERVICE_INDEX_CPU}
+  services:
+    index-name-service:
+      essential: true
+  efs_volumes:
+    - name: "myEFSVolume"
+      filesystem_id: ${EFS_ID}
+      transit_encryption: ENABLED
+      access_point: ${AWS_SERVICE_INDEX_FSAP}
+      iam: DISABLED
+run_params:
+  network_configuration:
+    awsvpc_configuration:
+      subnets:
+        - ${AWS_PRIVATE_SUBNET1}
+      security_groups:
+        - ${AWS_SERVICE_INDEX_SG}
+      assign_public_ip: DISABLED
+  service_discovery:
+    private_dns_namespace:
+      vpc: ${AWS_VPC}
+      name: ${AWS_NAME_SPACE}

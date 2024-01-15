@@ -1,0 +1,29 @@
+version: "3"
+services:
+  tramix-index-personas:
+    image: ${REPOSITORY_URL}/logstash-jdbc:${ECR_MICROSERVICE_VERSION:-latest}
+    volumes:
+      - myEFSVolume:/usr/share/logstash/pipeline
+    environment:
+      - JDBC_CONNECTION_STRING=${AWS_MICROSERVICE_JDBC_CONNECTION_STRING}
+      - JDBC_DATABASE=${AWS_MICROSERVICE_JDBC_DATABASE}
+      - JDBC_USER=${AWS_MICROSERVICE_JDBC_USER}
+      - JDBC_PASSWORD=${AWS_MICROSERVICE_JDBC_PASSWORD}
+      - JDBC_PAGE_SIZE=10
+      - ELS_INDEX=${AWS_MICROSERVICE_ELS_INDEX}
+      - ELS_HOST=${AWS_MICROSERVICE_ELS_HOST}
+      - ELS_USER=${AWS_MICROSERVICE_ELS_USER}
+      - ELS_PASSWORD=${AWS_MICROSERVICE_ELS_PASSWORD}
+      - LS_HEAP_SIZE=512m
+      - LS_JAVA_OPTS=-Xmx512m -Xms512m
+      - PIPELINE_WORKERS=1
+      - PIPELINE_ORDERED=true
+      - SCHEDULE_MIN_LGS_PER=*/2
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: ${AWS_MICROSERVICE_LOG}
+        awslogs-region: ${AWS_REGION}
+        awslogs-stream-prefix: service-name+++
+volumes:
+  myEFSVolume:
