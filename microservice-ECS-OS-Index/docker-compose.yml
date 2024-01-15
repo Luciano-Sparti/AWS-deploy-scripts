@@ -1,6 +1,6 @@
 version: "3"
 services:
-  tramix-index-personas:
+  container-name:
     image: ${REPOSITORY_URL}/logstash-jdbc:${ECR_MICROSERVICE_VERSION:-latest}
     volumes:
       - myEFSVolume:/usr/share/logstash/pipeline
@@ -24,6 +24,6 @@ services:
       options:
         awslogs-group: ${AWS_MICROSERVICE_LOG}
         awslogs-region: ${AWS_REGION}
-        awslogs-stream-prefix: service-name+++
+        awslogs-stream-prefix: service-name
 volumes:
   myEFSVolume:
