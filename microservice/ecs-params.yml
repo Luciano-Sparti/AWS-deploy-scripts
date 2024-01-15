@@ -7,7 +7,7 @@ task_definition:
     mem_limit: ${ECS_TRAMIX_MOVIMIENTOS_MEM}
     cpu_limit: ${ECS_TRAMIX_MOVIMIENTOS_CPU}
   services:
-    tramix-movimientos:
+    container-name:
       essential: true
     collector:
       essential: false
@@ -15,7 +15,7 @@ task_definition:
     - name: "myEFSVolume"
       filesystem_id: ${EFS_ID}
       transit_encryption: ENABLED
-      access_point: ${AWS_TRAMIX_MOVIMIENTOS_FSAP}
+      access_point: $ ECS_SERVICE_01_FSAP}
       iam: DISABLED
 run_params:
   network_configuration:
@@ -23,7 +23,7 @@ run_params:
       subnets:
         - ${AWS_PRIVATE_SUBNET1}
       security_groups:
-        - ${AWS_TRAMIX_MOVIMIENTOS_SG}
+        - $ ECS_SERVICE_01_SG}
       assign_public_ip: DISABLED
   service_discovery:
     private_dns_namespace:
