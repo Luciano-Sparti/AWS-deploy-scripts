@@ -4,8 +4,8 @@ task_definition:
   task_execution_role: ${ECS_EXECUTION_ROLE}
   ecs_network_mode: awsvpc
   task_size:
-    mem_limit: ${ECS_TRAMIX_MOVIMIENTOS_MEM}
-    cpu_limit: ${ECS_TRAMIX_MOVIMIENTOS_CPU}
+    mem_limit: ${ECS_SERVICE_01_MEM}
+    cpu_limit: ${ECS_SERVICE_01_CPU}
   services:
     container-name:
       essential: true
